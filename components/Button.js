@@ -10,7 +10,7 @@ import {white, purple, red} from '../utils/colors'
 
 
 
-export default function Button ({ onPress, title, color}) {
+export default function Button ({ onPress, title, color, disabled }) {
     const buttonStyles = [styles.button];
     const textStyles = [styles.text];
 
@@ -22,15 +22,25 @@ export default function Button ({ onPress, title, color}) {
         }
     }
 
+    const accessibilityStates = [];
+
+    if (disabled) {
+        buttonStyles.push(styles.buttonDisabled);
+        textStyles.push(styles.textDisabled);
+        accessibilityStates.push('disabled');
+    }
+
     const formattedTitle =
         Platform.OS === 'android' ? title.toUpperCase() : title;
 
     return (
         <TouchableOpacity
             onPress={onPress}
+            accessibilityStates={accessibilityStates}
+            disabled={disabled}
         >
             <View style={buttonStyles}>
-                <Text style={textStyles}>
+                <Text style={textStyles} disabled={disabled}>
                     {formattedTitle}
                 </Text>
             </View>
@@ -68,4 +78,19 @@ const styles = StyleSheet.create({
             },
         }),
     },
+    buttonDisabled: Platform.select({
+        ios: {},
+        android: {
+            elevation: 0,
+            backgroundColor: '#dfdfdf',
+        },
+    }),
+    textDisabled: Platform.select({
+        ios: {
+            color: '#cdcdcd',
+        },
+        android: {
+            color: '#a1a1a1',
+        },
+    }),
 })
