@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 
 
 class NewQuestion extends Component {
+    static navigationOptions = ({navigation}) => ({
+        title: 'New Question'
+    })
     render() {
         return (
             <View>

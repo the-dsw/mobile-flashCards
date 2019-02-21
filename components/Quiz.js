@@ -4,6 +4,10 @@ import { connect } from 'react-redux'
 
 
 class Quiz extends Component {
+    static navigationOptions = ({navigation}) => ({
+        title: 'Quiz'
+    })
+
     render() {
         return (
             <View>
@@ -16,5 +20,7 @@ class Quiz extends Component {
 const styles = StyleSheet.create({
 
 })
+
+
 
 export default connect()(Quiz)

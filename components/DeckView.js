@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import {gray, white, lightPurp, red, primaryPurple, lightPurple, secondaryPurp} from "../utils/colors";
+import {gray, white, lightPurp, red, primaryPurple, secondaryPurp} from "../utils/colors";
 import Button from './Button'
-
 
 class DeckView extends Component {
    static navigationOptions = ({ navigation }) => {
@@ -14,9 +13,23 @@ class DeckView extends Component {
         }
     }
 
+    handleAddCardClick = () => {
+        const { deckId } = this.props;
+        this.props.navigation.navigate(
+            'NewQuestion',
+            { deckId }
+        );
+    }
+    handleQuizClick = () => {
+        const { deckId } = this.props;
+        this.props.navigation.navigate(
+            'Quiz',
+            { deckId }
+        );
+    }
+
     render() {
        const { decks, numCards } = this.props
-        console.log("decks", decks)
 
         const title = "Delete Item"
         const formattedTitle =
@@ -30,12 +43,12 @@ class DeckView extends Component {
                 </View>
                 <View style={styles.buttons}>
                     <Button
-                        onPress={() => console.log('clicked add card')}
+                        onPress={this.handleAddCardClick}
                         title={"Add Card"}
                         color={Platform.OS === 'ios' ? '' : secondaryPurp}
                     />
                     <Button
-                        onPress={() => console.log('clicked start quiz')}
+                        onPress={this.handleQuizClick}
                         title={"Start Quiz"}
                         color={primaryPurple}
                     />
