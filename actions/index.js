@@ -8,9 +8,9 @@ export function receiveDecks (decks) {
     }
 }
 
-export function addDeck (title) {
+export function addDeck (deck) {
     return {
         type: ADD_DECK,
-        title,
+        deck,
     }
 }

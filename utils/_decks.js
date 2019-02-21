@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native'
 
-export const DECK_STORAGE_KEY = 'MobileFlashCarss:decks'
+export const DECK_STORAGE_KEY = 'MobileFlashCards:decks'
 
 function setDummyData () {
 
