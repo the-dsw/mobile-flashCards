@@ -6,11 +6,9 @@ import {
     TouchableOpacity,
     StyleSheet
 } from "react-native";
-import {white, purple, red} from '../utils/colors'
 
 
-
-export default function Button ({ onPress, title, color, disabled }) {
+export default  function Button ({ onPress, title, color, disabled }) {
     const buttonStyles = [styles.button];
     const textStyles = [styles.text];
 
@@ -94,3 +92,4 @@ const styles = StyleSheet.create({
         },
     }),
 })
+

@@ -14,12 +14,15 @@ import {
 } from 'react-navigation'
 import {
   white,
-  materialBlue,
-  lightBlue, secondaryPurp, primaryPurple
+  lightBlue,
+  secondaryPurp,
+  primaryPurple
 } from './utils/colors'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 import { setLocalNotification } from './utils/helpers'
+import Quiz from "./components/Quiz";
+import NewQuestion from "./components/NewQuestion";
 
 function CardsStatusBar ({ backgroundColor, ...props }) {
   return (
@@ -37,7 +40,8 @@ const RouteConfigs = {
       tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-browsers" size={30} color={tintColor} />
       )
-    }
+    },
+
   },
   NewDeck: {
     screen: NewDeck,
@@ -82,7 +86,29 @@ const MainNavigator = createStackNavigator({
     screen: TabsContainer,
     navigationOptions: {
       header: null,
+      headerBackTitle: null,
     },
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: {
+      headerTintColor: Platform.OS === "ios" ? lightBlue : white,
+      headerStyle: {
+        backgroundColor: Platform.OS === "ios" ? white : primaryPurple
+      },
+      headerBackTitle: null,
+    }
+  },
+  NewQuestion: {
+    screen: NewQuestion,
+    navigationOptions: {
+      headerTintColor: Platform.OS === "ios" ? lightBlue : white,
+      headerStyle: {
+        backgroundColor: Platform.OS === "ios" ? white : primaryPurple
+      },
+      headerBackTitle: null,
+    }
+
   },
   DeckView: {
     screen: DeckView,
@@ -90,7 +116,8 @@ const MainNavigator = createStackNavigator({
       headerTintColor: Platform.OS === "ios" ? lightBlue : white,
       headerStyle: {
         backgroundColor: Platform.OS === "ios" ? white : primaryPurple
-      }
+      },
+      headerBackTitle: null,
     }
   },
 })
@@ -115,3 +142,4 @@ export default class App extends React.Component {
     );
   }
 }
+
