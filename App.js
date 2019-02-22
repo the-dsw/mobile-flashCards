@@ -15,7 +15,7 @@ import {
 import {
   white,
   lightBlue,
-  secondaryPurp,
+  secondaryPurple,
   primaryPurple
 } from './utils/colors'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
@@ -135,7 +135,7 @@ export default class App extends React.Component {
     return (
         <Provider store={store}>
           <View style={{flex: 1}}>
-            <CardsStatusBar backgroundColor={Platform.OS === 'ios' ? lightBlue : secondaryPurp}/>
+            <CardsStatusBar backgroundColor={Platform.OS === 'ios' ? lightBlue : secondaryPurple}/>
             <AppContainer />
           </View>
         </Provider>
