@@ -7,7 +7,7 @@ import {
 import { connect } from 'react-redux'
 import TextInputField from './TextInputField'
 import Button from './Button'
-import { primaryPurple } from "../utils/colors";
+import {gray, primaryPurple} from "../utils/colors";
 
 class NewQuestion extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -60,14 +60,16 @@ const styles = StyleSheet.create({
             borderColor: '#d6d7da',
             borderWidth: 0.5,
             borderRadius: 16,
-            marginBottom: 15
+            marginBottom: 15,
+            color: gray,
         },
         android: {
             padding: 5,
             borderColor: '#d6d7da',
             borderWidth: 0.5,
             borderRadius: 2,
-            marginBottom: 15
+            marginBottom: 15,
+            color: gray,
         }
     }),
     button: {
