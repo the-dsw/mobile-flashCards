@@ -1,7 +1,14 @@
 import React, {Component} from 'react'
-import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Platform } from 'react-native'
 import { connect } from 'react-redux'
-import {gray, white, lightPurp, red, primaryPurple, secondaryPurp} from "../utils/colors";
+import {
+    gray,
+    white,
+    red,
+    primaryPurple,
+    secondaryPurple,
+    lightPurple
+} from "../utils/colors";
 import Button from './Button'
 import TextButton from './TextButton'
 
@@ -46,12 +53,12 @@ class DeckView extends Component {
                     <Button
                         onPress={this.handleAddCardClick}
                         title={"Add Card"}
-                        color={Platform.OS === 'ios' ? '' : secondaryPurp}
+                        color={Platform.OS === 'ios' ? '' : secondaryPurple}
                     />
                     <Button
                         onPress={this.handleQuizClick}
                         title={"Start Quiz"}
-                        color={primaryPurple}
+                        color={lightPurple}
                     />
                     <TextButton
                         onPress={() => console.log('clicked delete text button')}
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
                 fontWeight: '500',
             }
         })
-    }
+    },
 })
 
 function mapStateToProps (state, { navigation }) {

@@ -1,6 +1,6 @@
 
 export const primaryPurple = '#6200EE'
-export const secondaryPurp = '#3700B3'
+export const secondaryPurple = '#3700B3'
 export const lightPurple = '#BB86FC'
 export const blue = '#3D6DCC'
 export const lightBlue = '#007AFF'
@@ -11,3 +11,4 @@ export const white = '#fff'
 export const red = '#b71845'
 export const orange = '#f26f28'
 export const pink = '#b93fb3'
+export const teal = '#03DAC5'
