@@ -8,8 +8,7 @@ import {gray, primaryPurple} from "../utils/colors";
 
 class NewDeck extends Component {
     state = {
-        question: "",
-        answer: "",
+        title: ""
     }
     render() {
         return (
@@ -21,8 +20,8 @@ class NewDeck extends Component {
                 </View>
                 <TextInputField
                     style={styles.input}
-                    onChangeText={(question) => this.setState({question})}
-                    value={this.state.question}
+                    onChangeText={(title) => this.setState({title})}
+                    value={this.state.title}
                     placeholder={"Deck Title"}
                 />
                 <View style={styles.button}>
