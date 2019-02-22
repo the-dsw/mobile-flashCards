@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native
 import { connect } from 'react-redux'
 import {gray, white, lightPurp, red, primaryPurple, secondaryPurp} from "../utils/colors";
 import Button from './Button'
+import TextButton from './TextButton'
 
 class DeckView extends Component {
    static navigationOptions = ({ navigation }) => {
@@ -52,11 +53,12 @@ class DeckView extends Component {
                         title={"Start Quiz"}
                         color={primaryPurple}
                     />
-                    <TouchableOpacity onPress={() => console.log("clicked delete item")}>
-                        <View style={styles.center}>
-                            <Text style={styles.delete}>{formattedTitle}</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <TextButton
+                        onPress={() => console.log('clicked delete text button')}
+                        style={{color: red}}
+                    >
+                        {formattedTitle}
+                    </TextButton>
                 </View>
             </View>
         )
@@ -94,19 +96,6 @@ const styles = StyleSheet.create({
                 justifyContent: "center",
                 alignItems: "center",
                 fontWeight: '500',
-            }
-        })
-    },
-    delete: {
-        color: red,
-        ...Platform.select({
-            ios: {
-                fontSize: 18,
-                marginTop: 10,
-            },
-            android: {
-                fontWeight: '500',
-                marginTop: 10,
             }
         })
     }

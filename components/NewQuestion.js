@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 class NewQuestion extends Component {
     static navigationOptions = ({navigation}) => ({
-        title: 'New Question'
+        title: 'Add Card'
     })
     render() {
         return (
