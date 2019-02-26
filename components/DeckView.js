@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import { View, Text, StyleSheet, Platform } from 'react-native'
 import { connect } from 'react-redux'
+
 import {
     gray,
     white,
     red,
-    primaryPurple,
     secondaryPurple,
     lightPurple
 } from "../utils/colors";
@@ -61,7 +61,7 @@ class DeckView extends Component {
                         color={lightPurple}
                     />
                     <TextButton
-                        onPress={() => console.log('clicked delete text button')}
+                        onPress={() => console.log('clicked delete item')}
                         style={{color: red}}
                     >
                         {formattedTitle}

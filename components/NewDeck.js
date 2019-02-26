@@ -1,16 +1,51 @@
 import React, {Component} from 'react'
-import { View, Text, StyleSheet, Platform} from 'react-native'
+import { View, Text, StyleSheet, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import TextInputField from "./TextInputField";
 import Button from "./Button";
-import {gray, primaryPurple} from "../utils/colors";
-
+import {gray, primaryPurple, red} from "../utils/colors";
+import {addDeck } from '../actions'
+import {saveDeckTitle} from '../utils/api'
 
 class NewDeck extends Component {
     state = {
-        title: ""
+        title: "",
+        error: "",
     }
+
+    handleAddCard = () => {
+        const { title } =  this.state
+        const { dispatch, navigation, decks } = this.props
+        const deckObj = {
+            [title]: {
+                title,
+                questions: []
+            }
+        }
+
+       if (!title) {
+           this.setState({ error: 'Deck Name cannot be empty!'})
+       } else {
+           if(decks[title]) {
+               this.setState({ error: 'Deck Name already exists!'})
+           } else {
+               saveDeckTitle(title)
+                   .then(() => dispatch(addDeck(deckObj)))
+                   .then(() => this.setState(() => ({
+                       title: '',
+                       error: ''
+                   })))
+                   .then(() =>  navigation.navigate('DeckList', { deckId: title }))
+           }
+
+
+       }
+    }
+
+
     render() {
+        const { error } =  this.state
+
         return (
             <View style={styles.container}>
                 <View>
@@ -24,9 +59,10 @@ class NewDeck extends Component {
                     value={this.state.title}
                     placeholder={"Deck Title"}
                 />
+                <Text style={styles.error}>{error}</Text>
                 <View style={styles.button}>
                     <Button
-                        onPress={this.handleAddCardClick}
+                        onPress={this.handleAddCard}
                         title={"Create Deck"}
                         color={Platform.OS === 'ios' ? '' : primaryPurple}
 
@@ -47,6 +83,9 @@ const styles = StyleSheet.create({
         fontSize: 36,
         marginBottom: 30,
         color: gray,
+    },
+    error: {
+        color: red
     },
     input: Platform.select({
         ios: {
@@ -73,4 +112,11 @@ const styles = StyleSheet.create({
 
     }
 })
-export default connect()(NewDeck)
+
+function mapStateToProps(state) {
+    return {
+        decks: state
+    }
+}
+
+export default connect(mapStateToProps)(NewDeck)

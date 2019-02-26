@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { AppLoading } from 'expo'
 import { receiveDecks } from '../actions'
 import { getDecks } from '../utils/api'
-import { white, lightGray, gray } from '../utils/colors'
+import { white, gray } from '../utils/colors'
 
 
 class DeckList extends Component {
