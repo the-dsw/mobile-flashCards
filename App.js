@@ -6,6 +6,7 @@ import DeckList from './components/DeckList'
 import NewDeck from './components/NewDeck'
 import DeckView from './components/DeckView'
 import reducer from './reducers'
+import middleware from './middleware';
 import {
   createBottomTabNavigator,
   createMaterialTopTabNavigator,
@@ -130,7 +131,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const store = createStore(reducer)
+    const store = createStore(reducer,  middleware)
 
     return (
         <Provider store={store}>
