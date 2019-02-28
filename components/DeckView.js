@@ -14,30 +14,38 @@ import TextButton from './TextButton'
 
 class DeckView extends Component {
    static navigationOptions = ({ navigation }) => {
-        const { deckId } = navigation.state.params
+        const { deckId, questions } = navigation.state.params
 
         return {
-            title: deckId
+            title: deckId,
+            questions
         }
     }
 
     handleAddCardClick = () => {
-        const { deckId } = this.props;
+        const { deckId, questions } = this.props;
         this.props.navigation.navigate(
             'NewQuestion',
-            { deckId }
+            {
+                deckId,
+                questions,
+            }
         );
     }
     handleQuizClick = () => {
-        const { deckId } = this.props;
+        const { deckId, questions } = this.props;
         this.props.navigation.navigate(
             'Quiz',
-            { deckId }
+            {
+                deckId,
+                questions
+            }
         );
     }
 
     render() {
-       const { decks, numCards } = this.props
+        const { decks, numQuestions } = this.props
+        console.log(numQuestions)
 
         const title = "Delete Item"
         const formattedTitle =
@@ -47,7 +55,7 @@ class DeckView extends Component {
             <View style={styles.container}>
                 <View style={styles.center}>
                     <Text style={{fontSize: 20}}>{decks.title}</Text>
-                    <Text style={{fontSize: 16, color: gray}}>{numCards > 1 ? `${numCards} cards` :  `${numCards} card`}</Text>
+                    <Text style={{fontSize: 16, color: gray}}>{numQuestions > 1 ? `${numQuestions} cards` :  `${numQuestions} card`}</Text>
                 </View>
                 <View style={styles.buttons}>
                     <Button
@@ -109,12 +117,14 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps (state, { navigation }) {
-    const { deckId, numCards } = navigation.state.params
+    const { deckId, questions } = navigation.state.params
+    const numQuestions = state[deckId].questions.length
 
     return {
         deckId,
-        numCards,
-        decks: state[deckId]
+        decks: state[deckId],
+        numQuestions,
+        questions,
     }
 }
 

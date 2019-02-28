@@ -41,7 +41,7 @@ class DeckList extends Component {
             <ScrollView style={styles.container}>
                 {Object.keys(decks).map((deck) => {
                     const title = decks[deck].title
-                    const numCards = decks[deck].questions.length
+                    const questions = decks[deck].questions
 
                     return (
                         <TouchableOpacity
@@ -51,12 +51,12 @@ class DeckList extends Component {
                                 'DeckView',
                                 {
                                     deckId: deck,
-                                    numCards
+                                    questions
                                 }
                                 )}
                         >
                             <Text style={{fontSize: 20}}>{title}</Text>
-                            <Text style={{fontSize: 16, color: gray}}>{numCards > 1 ? `${numCards} cards` :  `${numCards} card`}</Text>
+                            <Text style={{fontSize: 16, color: gray}}>{questions.length > 1 ? `${questions.length} cards` :  `${questions.length} card`}</Text>
                         </TouchableOpacity>
                     )
                 })}

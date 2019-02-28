@@ -24,10 +24,16 @@ class NewDeck extends Component {
         }
 
        if (!title) {
-           this.setState({ error: 'Deck Name cannot be empty!'})
+           this.setState(() => ({
+               error: 'Deck Name cannot be empty!',
+               title: ''
+           }))
        } else {
            if(decks[title]) {
-               this.setState({ error: 'Deck Name already exists!'})
+               this.setState(() => ({
+                   error: 'Deck Name already exists!',
+                   title: ''
+               }))
            } else {
                saveDeckTitle(title)
                    .then(() => dispatch(addDeck(deckObj)))

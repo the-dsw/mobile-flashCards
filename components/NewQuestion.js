@@ -1,13 +1,21 @@
 import React, {Component} from 'react'
 import {
     View,
+    Text,
     StyleSheet,
     Platform,
 } from 'react-native'
 import { connect } from 'react-redux'
 import TextInputField from './TextInputField'
 import Button from './Button'
-import {gray, primaryPurple} from "../utils/colors";
+import {gray, primaryPurple, red} from "../utils/colors";
+
+function validate(question, answer) {
+    return {
+        question: question.length === 0,
+        answer: answer.length === 0,
+    };
+}
 
 class NewQuestion extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -19,26 +27,44 @@ class NewQuestion extends Component {
         answer: "",
     }
 
+    submitQuestion = (e) => {
+        e.preventDefault()
+        const { question, answer } = this.state
+        const {deckId, questions} = this.props.navigation.state.params
+
+        console.log("deckId", deckId)
+        console.log("questions", questions)
+
+    }
+
+
     render() {
+        const { question, answer } = this.state
+        const { navigation, decks } = this.props
+        const { deckId, questions } = navigation.state.params
+        const errors = validate(question, answer);
+        const isEnabled = !Object.keys(errors).some(x => errors[x]);
+
         return (
             <View style={styles.container}>
-               <TextInputField
+                <TextInputField
                    style={styles.input}
                    onChangeText={(question) => this.setState({question})}
-                   value={this.state.question}
+                   value={question}
                    placeholder={"Question"}
-               />
+                />
                 <TextInputField
                     style={styles.input}
                     onChangeText={(answer) => this.setState({answer})}
-                    value={this.state.answer}
+                    value={answer}
                     placeholder={"Answer"}
                 />
                 <View style={styles.button}>
                     <Button
-                        onPress={this.handleAddCardClick}
+                        onPress={this.submitQuestion}
                         title={"Submit"}
                         color={Platform.OS === 'ios' ? '' : primaryPurple}
+                        disabled={!isEnabled}
 
                     />
                 </View>
@@ -52,6 +78,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 30
+    },
+    error: {
+        color: red
     },
     input: Platform.select({
         ios: {
@@ -79,4 +108,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect()(NewQuestion)
+function mapStateToProps(state) {
+    return {
+        decks: state,
+    };
+}
+
+export default connect(mapStateToProps)(NewQuestion)
