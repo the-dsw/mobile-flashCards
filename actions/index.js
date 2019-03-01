@@ -16,9 +16,9 @@ export function addDeck (deck) {
     }
 }
 
-export function addQuestion (question) {
+export function addQuestion (params) {
     return {
         type: ADD_QUESTION,
-        question,
+        params,
     }
 }

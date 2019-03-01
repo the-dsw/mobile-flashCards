@@ -1,14 +1,16 @@
 import React, {Component} from 'react'
 import {
     View,
-    Text,
     StyleSheet,
     Platform,
 } from 'react-native'
 import { connect } from 'react-redux'
+import {addQuestion} from '../actions';
 import TextInputField from './TextInputField'
 import Button from './Button'
 import {gray, primaryPurple, red} from "../utils/colors";
+import {addQuestionToDeck} from "../utils/api";
+
 
 function validate(question, answer) {
     return {
@@ -30,18 +32,18 @@ class NewQuestion extends Component {
     submitQuestion = (e) => {
         e.preventDefault()
         const { question, answer } = this.state
-        const {deckId, questions} = this.props.navigation.state.params
+        const { dispatch, navigation } = this.props
+        const {deckId, questions} = navigation.state.params
 
-        console.log("deckId", deckId)
-        console.log("questions", questions)
+        addQuestionToDeck({ deckId, question, answer })
+            .then(() => dispatch(addQuestion({deckId, questions, question, answer})))
+            .then(() => navigation.navigate('DeckView'))
 
     }
 
 
     render() {
         const { question, answer } = this.state
-        const { navigation, decks } = this.props
-        const { deckId, questions } = navigation.state.params
         const errors = validate(question, answer);
         const isEnabled = !Object.keys(errors).some(x => errors[x]);
 

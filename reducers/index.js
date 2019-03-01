@@ -16,6 +16,14 @@ function decks (state = {}, action) {
                 ...state,
                 ...action.deck
             }
+        case ADD_QUESTION:
+            const {deckId, questions, question, answer} = action.params;
+            const newQuestions = questions.concat([ { question, answer } ]);
+
+            return {
+                ...state,
+                [deckId]: {...state[deckId], questions: newQuestions},
+            };
 
         default:
             return state

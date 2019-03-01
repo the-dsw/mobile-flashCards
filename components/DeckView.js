@@ -44,18 +44,17 @@ class DeckView extends Component {
     }
 
     render() {
-        const { decks, numQuestions } = this.props
-        console.log(numQuestions)
-
+        const { deckId, decks } = this.props
         const title = "Delete Item"
+        const questions = decks[deckId].questions
         const formattedTitle =
             Platform.OS === 'android' ? title.toUpperCase() : title;
 
         return (
             <View style={styles.container}>
                 <View style={styles.center}>
-                    <Text style={{fontSize: 20}}>{decks.title}</Text>
-                    <Text style={{fontSize: 16, color: gray}}>{numQuestions > 1 ? `${numQuestions} cards` :  `${numQuestions} card`}</Text>
+                    <Text style={{fontSize: 20}}>{deckId}</Text>
+                    <Text style={{fontSize: 16, color: gray}}>{questions.length > 1 ? `${questions.length} cards` :  `${questions.length} card`}</Text>
                 </View>
                 <View style={styles.buttons}>
                     <Button
@@ -118,12 +117,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state, { navigation }) {
     const { deckId, questions } = navigation.state.params
-    const numQuestions = state[deckId].questions.length
 
     return {
         deckId,
-        decks: state[deckId],
-        numQuestions,
+        decks: state,
         questions,
     }
 }
