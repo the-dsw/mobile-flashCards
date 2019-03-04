@@ -46,7 +46,7 @@ class DeckView extends Component {
     render() {
         const { deckId, decks } = this.props
         const title = "Delete Item"
-        const questions = decks[deckId].questions
+        const questions = decks[deckId].questions || []
         const formattedTitle =
             Platform.OS === 'android' ? title.toUpperCase() : title;
 
