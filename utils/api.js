@@ -42,7 +42,7 @@ export function addQuestionToDeck({deckId, question, answer}) {
 
 }
 
-export function removeDeck (deck) {
+export function removeFromDeck (deck) {
     return AsyncStorage.getItem(DECK_STORAGE_KEY)
         .then((results) => {
             const data = JSON.parse(results)

@@ -14,20 +14,23 @@ import {
     lightPurple,
     primaryPurple,
     white,
-    lightBlue,
-    teal
+    lightBlue, secondaryPurple
 } from "../utils/colors";
 import Button from "./Button";
-
+import {clearLocalNotification, setLocalNotification} from "../utils/helpers";
 
 class Quiz extends Component {
     static navigationOptions = ({navigation}) => ({
         title: 'Quiz'
     })
 
-     state = {
-        textBtn: "Answer"
-     }
+    state = {
+        textBtn: "Show Answer",
+        show: false,
+        currentQuestion: 0,
+        score: 0,
+        count: 0
+    }
 
     componentWillMount() {
         this.animatedValue = new Animated.Value(0)
@@ -58,14 +61,14 @@ class Quiz extends Component {
 
     flipCard() {
         if (this.value >= 90) {
-            this.setState({ textBtn: "Answer" })
+            this.setState({ textBtn: "Show Answer" })
             Animated.spring(this.animatedValue, {
                 toValue: 0,
                 friction: 8,
                 tension: 10
             }).start()
         } else {
-            this.setState({ textBtn: "Question" })
+            this.setState({ textBtn: "Show Question" })
             Animated.spring(this.animatedValue, {
                 toValue: 180,
                 friction: 8,
@@ -75,8 +78,56 @@ class Quiz extends Component {
 
     }
 
+    NoCard = () => (
+        <View style={styles.noCard}>
+            <Text style={styles.noCardText}>This deck has no question cards.</Text>
+        </View>
+    );
+
+
+    restartQuiz = () => {
+        this.setState({
+            textBtn: "Show Answer",
+            show: false,
+            currentQuestion: 0,
+            score: 0,
+            count: 0
+        });
+
+        clearLocalNotification()
+            .then(setLocalNotification)
+    }
+
+    backToDeck = () => {
+        this.props.navigation.goBack()
+
+    }
+
+    goToNext = () => {
+        const {questions} = this.props.navigation.state.params
+        this.setState({
+            currentQuestion: (this.state.currentQuestion + 1) % questions.length,
+            count: this.state.count + 1
+        })
+    };
+
+    handleCorrect = () => {
+        this.setState({
+            score: this.state.score + 1
+        })
+        this.goToNext()
+    }
+
+    handleIncorrect = () => {
+        this.goToNext()
+    }
+
     render() {
-        const { textBtn } = this.state
+        const { textBtn, currentQuestion, score, count } = this.state
+        const { navigation } = this.props
+        const { questions } = navigation.state.params
+        const card = questions[currentQuestion]
+
         const frontAnimatedStyle = {
             transform: [{
                 rotateY: this.frontInterpolate
@@ -89,42 +140,70 @@ class Quiz extends Component {
             }]
         }
 
+        if(!questions.length) {
+            return this.NoCard()
+        }
+
+
         return (
-            <View style={styles.container}>
-                <View>
-                    <Text style={styles.text}>2/2</Text>
-                </View>
-                <View style={styles.center}>
-                    <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
-                        <Text style={styles.flipText}>
-                            Does React
-                            Native work with
-                            Android?
-                        </Text>
-                    </Animated.View>
-                    <Animated.View style={[styles.flipCard, styles.flipCardBack, backAnimatedStyle, {opacity: this.backOpacity}]}>
-                        <Text style={styles.flipText}>
-                            Yes
-                        </Text>
-                    </Animated.View>
-                    <TextButton
-                        onPress={() => this.flipCard()}
-                        style={Platform.OS === 'ios' ? {color: lightBlue}: {color: blue}}
-                    >
-                        {textBtn}
-                    </TextButton>
-                </View>
-                <View style={styles.buttons}>
-                    <Button
-                        onPress={() => console.log('clicked Correct')}
-                        title={"Correct"}
-                        color={Platform.OS === 'ios' ? '' : primaryPurple}
-                    />
-                    <Button
-                        onPress={() => console.log('clicked Incorrect')}
-                        title={"Incorrect"}
-                        color={"#EF5350"}
-                    />
+            <View style={{flex: 1}}>
+                <View style={styles.container}>
+                    <View>
+                        <Text style={styles.text}>{currentQuestion + 1} / {questions.length}</Text>
+                    </View>
+                    <View style={styles.center}>
+                        <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
+                            <Text style={styles.flipText}>
+                                {card.question}
+                            </Text>
+                        </Animated.View>
+                        <Animated.View style={[styles.flipCard, styles.flipCardBack, backAnimatedStyle, {opacity: this.backOpacity}]}>
+                            <Text style={styles.flipText}>
+                                {card.answer}
+                            </Text>
+                        </Animated.View>
+                        <TextButton
+                            onPress={() => this.flipCard()}
+                            style={Platform.OS === 'ios' ? {color: lightBlue}: {color: blue}}
+                        >
+                            {textBtn}
+                        </TextButton>
+                    </View>
+                    <View style={styles.buttons}>
+                        {count === questions.length
+                            ? (<View>
+                                <Text style={styles.scoreText}>
+                                    {
+                                        Platform.OS === 'android'
+                                            ?  `SCORE: ${score} of ${questions.length}`
+                                            : `Score: ${score} of ${questions.length}`
+                                    }
+                                </Text>
+                                <Button
+                                    onPress={this.restartQuiz}
+                                    title={"Restart Quiz"}
+                                    color={Platform.OS === 'ios' ? '' : primaryPurple}
+                                />
+                                <Button
+                                    onPress={this.backToDeck}
+                                    title={"Back To Deck"}
+                                    color={"#EF5350"}
+                                />
+                            </View>)
+                            : (<View>
+                                <Button
+                                    onPress={this.handleCorrect}
+                                    title={"Correct"}
+                                    color={Platform.OS === 'ios' ? '' : primaryPurple}
+                                />
+                                <Button
+                                    onPress={this.handleIncorrect}
+                                    title={"Incorrect"}
+                                    color={"#EF5350"}
+                                />
+                            </View>)
+                        }
+                    </View>
                 </View>
             </View>
         )
@@ -137,6 +216,33 @@ const styles = StyleSheet.create({
         padding: 30,
         backgroundColor: white,
     },
+    noCard: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    noCardText: Platform.select({
+        ios: {
+            color: '#007AFF',
+            fontSize: 18,
+        },
+        android: {
+            color: secondaryPurple,
+            fontWeight: '500',
+        },
+    }),
+    scoreText: Platform.select({
+        ios: {
+            color: '#007AFF',
+            fontSize: 18,
+            marginBottom: 10
+        },
+        android: {
+            color: secondaryPurple,
+            fontWeight: '500',
+            marginBottom: 10
+        },
+    }),
     text: {
         textAlign: "left",
         marginBottom: 30,
@@ -173,7 +279,7 @@ const styles = StyleSheet.create({
         top: 0,
     },
     flipText: {
-        width: 90,
+        padding: 10,
         fontSize: 20,
         color: white,
         fontWeight: 'bold',
@@ -192,6 +298,10 @@ const styles = StyleSheet.create({
     }),
 })
 
+function mapStateToProps(decks) {
+    return {
+        decks
+    }
+}
 
-
-export default connect()(Quiz)
+export default connect(mapStateToProps)(Quiz)
