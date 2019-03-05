@@ -1,8 +1,12 @@
+import _ from 'lodash'
 import {
     RECEIVE_DECKS,
     ADD_DECK,
-    ADD_QUESTION
+    ADD_QUESTION,
+    REMOVE_DECK
 } from '../actions'
+
+import { removeByKey } from '../utils/helpers'
 
 function decks (state = {}, action) {
     switch (action.type) {
@@ -12,6 +16,7 @@ function decks (state = {}, action) {
                 ...action.decks
             }
         case ADD_DECK:
+            console.log("ADD_DECK", action.deck)
             return {
                 ...state,
                 ...action.deck
@@ -23,11 +28,21 @@ function decks (state = {}, action) {
             return {
                 ...state,
                 [deckId]: {...state[deckId], questions: newQuestions},
-            };
+            }
+        case REMOVE_DECK:
+            /*const newState = removeByKey(state, action.deckId)
+
+            return {
+                ...state,
+                ...newState
+            }*/
+            return _.omit(state, action.deckId)
 
         default:
             return state
     }
 }
+
+
 
 export default decks

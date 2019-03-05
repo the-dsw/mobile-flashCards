@@ -11,6 +11,8 @@ import {
 } from "../utils/colors";
 import Button from './Button'
 import TextButton from './TextButton'
+import { removeFromDeck } from "../utils/api";
+import { removeDeck } from "../actions";
 
 class DeckView extends Component {
    static navigationOptions = ({ navigation }) => {
@@ -23,9 +25,7 @@ class DeckView extends Component {
     }
 
     handleAddCardClick = () => {
-        const { deckId, decks } = this.props
-        const questions = decks[deckId].questions
-        console.log(questions)
+        const { deckId, questions } = this.props
         this.props.navigation.navigate(
             'NewQuestion',
             {
@@ -46,10 +46,23 @@ class DeckView extends Component {
         )
     }
 
+    handleDeleteItem = async () => {
+        const { remove, goBack, deckId } = this.props
+
+        await remove()
+        await goBack()
+        await removeFromDeck(deckId)
+
+    }
+
     render() {
         const { deckId, decks } = this.props
+        if (!decks) {
+            return null
+        }
         const title = "Delete Item"
         const questions = decks[deckId].questions || []
+
         const formattedTitle =
             Platform.OS === 'android' ? title.toUpperCase() : title;
 
@@ -71,7 +84,7 @@ class DeckView extends Component {
                         color={lightPurple}
                     />
                     <TextButton
-                        onPress={() => console.log('clicked delete item')}
+                        onPress={this.handleDeleteItem}
                         style={{color: red}}
                     >
                         {formattedTitle}
@@ -128,4 +141,13 @@ function mapStateToProps (state, { navigation }) {
     }
 }
 
-export default connect(mapStateToProps)(DeckView)
+function mapDispatchToProps (dispatch, { navigation }) {
+    const { deckId } = navigation.state.params
+
+    return {
+        remove: () => dispatch(removeDeck(deckId)),
+        goBack: () => navigation.goBack(),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckView)

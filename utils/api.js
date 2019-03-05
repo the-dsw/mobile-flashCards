@@ -43,12 +43,12 @@ export function addQuestionToDeck({deckId, question, answer}) {
 
 }
 
-export function removeFromDeck (deck) {
+export function removeFromDeck (deckId) {
     return AsyncStorage.getItem(DECK_STORAGE_KEY)
         .then((results) => {
             const data = JSON.parse(results)
-            data[deck] = undefined
-            delete data[deck]
+            data[deckId] = undefined
+            delete data[deckId]
             AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(data))
         })
 }

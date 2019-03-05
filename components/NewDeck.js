@@ -119,9 +119,9 @@ const styles = StyleSheet.create({
     }
 })
 
-function mapStateToProps(state) {
+function mapStateToProps(decks) {
     return {
-        decks: state
+        decks
     }
 }
 

@@ -26,6 +26,7 @@ class DeckList extends Component {
             .then(() => this.setState(() => ({
                 ready: true
             })))
+
     }
 
     render() {
@@ -42,7 +43,6 @@ class DeckList extends Component {
                 {Object.keys(decks).map((deck) => {
                     const title = decks[deck].title
                     const questions = decks[deck].questions || []
-
                     return (
                         <TouchableOpacity
                             key={deck}
@@ -50,13 +50,18 @@ class DeckList extends Component {
                             onPress={() =>  this.props.navigation.navigate(
                                 'DeckView',
                                 {
-                                    deckId: deck,
+                                    deckId: title,
                                     questions
                                 }
                                 )}
                         >
                             <Text style={{fontSize: 20}}>{title}</Text>
-                            <Text style={{fontSize: 16, color: gray}}>{questions.length > 1 ? `${questions.length} cards` :  `${questions.length} card`}</Text>
+                            <Text style={{fontSize: 16, color: gray}}>
+                                {questions.length > 1
+                                    ? `${questions.length} cards`
+                                    :  `${questions.length} card`
+                                }
+                            </Text>
                         </TouchableOpacity>
                     )
                 })}

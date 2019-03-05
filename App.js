@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Platform, StatusBar } from 'react-native';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import DeckList from './components/DeckList'
 import NewDeck from './components/NewDeck'
 import DeckView from './components/DeckView'
@@ -131,7 +132,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const store = createStore(reducer,  middleware)
+    const store = createStore(reducer,  composeWithDevTools(middleware))
 
     return (
         <Provider store={store}>

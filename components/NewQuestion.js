@@ -5,7 +5,7 @@ import {
     Platform,
 } from 'react-native'
 import { connect } from 'react-redux'
-import {addQuestion} from '../actions';
+import {addQuestion, removeDeck} from '../actions';
 import TextInputField from './TextInputField'
 import Button from './Button'
 import {gray, primaryPurple, red} from "../utils/colors";
@@ -32,8 +32,9 @@ class NewQuestion extends Component {
     submitQuestion = (e) => {
         e.preventDefault()
         const { question, answer } = this.state
-        const { dispatch, navigation } = this.props
+        const { dispatch, navigation, decks } = this.props
         const {deckId, questions} = navigation.state.params
+        console.log("questions", decks[deckId].questions)
 
         addQuestionToDeck({ deckId, question, answer })
             .then(() => dispatch(addQuestion({deckId, questions, question, answer})))
@@ -110,10 +111,10 @@ const styles = StyleSheet.create({
     }
 })
 
-function mapStateToProps(state) {
+function mapStateToProps(decks) {
     return {
-        decks: state,
-    };
+        decks,
+    }
 }
 
 export default connect(mapStateToProps)(NewQuestion)
