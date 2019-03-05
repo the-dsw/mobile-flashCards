@@ -4,12 +4,6 @@ import { Notifications, Permissions } from 'expo'
 
 const NOTIFICATION_KEY = 'MobileFlashCards:notifications'
 
-export function getDailyReminderValue () {
-    return {
-        today: "👋 Don't forget to log your data today"
-    }
-}
-
 export function clearLocalNotification () {
     return AsyncStorage.removeItem(NOTIFICATION_KEY)
         .then(Notifications.cancelAllScheduledNotificationsAsync)
@@ -60,13 +54,4 @@ export function setLocalNotification () {
                     })
             }
         })
-}
-
-export function removeByKey (myObj, deleteKey) {
-    return Object.keys(myObj)
-        .filter(key => key !== deleteKey)
-        .reduce((result, current) => {
-            result[current] = myObj[current];
-            return result;
-        }, {});
 }

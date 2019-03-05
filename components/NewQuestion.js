@@ -32,12 +32,12 @@ class NewQuestion extends Component {
     submitQuestion = (e) => {
         e.preventDefault()
         const { question, answer } = this.state
-        const { dispatch, navigation, decks } = this.props
-        const {deckId, questions} = navigation.state.params
-        console.log("questions", decks[deckId].questions)
+        const { dispatch, navigation } = this.props
+        const { deckId } = navigation.state.params
 
-        addQuestionToDeck({ deckId, question, answer })
-            .then(() => dispatch(addQuestion({deckId, questions, question, answer})))
+        dispatch(addQuestion(deckId, question, answer))
+
+        addQuestionToDeck(deckId, question, answer)
             .then(() => navigation.navigate('DeckView'))
 
     }

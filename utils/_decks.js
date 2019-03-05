@@ -39,6 +39,5 @@ export function formatDecksResults (decks) {
     return decks === null
         ? setDummyData()
         : JSON.parse(decks)
-        //: AsyncStorage.removeItem(DECK_STORAGE_KEY)
 }
 

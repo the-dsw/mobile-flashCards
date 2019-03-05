@@ -6,8 +6,6 @@ import {
     REMOVE_DECK
 } from '../actions'
 
-import { removeByKey } from '../utils/helpers'
-
 function decks (state = {}, action) {
     switch (action.type) {
         case RECEIVE_DECKS:
@@ -16,33 +14,27 @@ function decks (state = {}, action) {
                 ...action.decks
             }
         case ADD_DECK:
-            console.log("ADD_DECK", action.deck)
             return {
                 ...state,
                 ...action.deck
             }
         case ADD_QUESTION:
-            const {deckId, questions, question, answer} = action.params;
-            const newQuestions = questions.concat([ { question, answer } ]);
-
             return {
                 ...state,
-                [deckId]: {...state[deckId], questions: newQuestions},
+                [action.deckId]: {
+                    title: state[action.deckId].title,
+                    questions: state[action.deckId].questions.concat({
+                        question: action.question,
+                        answer: action.answer
+                    })
+                }
             }
         case REMOVE_DECK:
-            /*const newState = removeByKey(state, action.deckId)
-
-            return {
-                ...state,
-                ...newState
-            }*/
             return _.omit(state, action.deckId)
 
         default:
             return state
     }
 }
-
-
 
 export default decks

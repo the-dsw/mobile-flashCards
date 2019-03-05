@@ -19,27 +19,14 @@ export function saveDeckTitle (title) {
 
 }
 
-export function addQuestionToDeck({deckId, question, answer}) {
+export function addQuestionToDeck(deckId, question, answer) {
     return AsyncStorage.getItem(DECK_STORAGE_KEY)
-        .then((data) => {
-            let decks = JSON.parse(data)
-            let questions = decks[deckId].questions
-            const updatedDeck = {
-                [deckId]: {
-                    ...data,
-                    questions: [
-                        ...questions,
-                        {
-                            question,
-                            answer,
-                        }
-                    ]
-                }
-            }
+        .then((result) => {
+            let decks = JSON.parse(result)
+            decks[deckId].questions.push({question, answer})
 
-
-            return AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify(updatedDeck))
-        })
+            AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify(decks))
+    })
 
 }
 
@@ -49,7 +36,9 @@ export function removeFromDeck (deckId) {
             const data = JSON.parse(results)
             data[deckId] = undefined
             delete data[deckId]
+
             AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(data))
         })
+
 }
 

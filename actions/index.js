@@ -24,9 +24,11 @@ export function removeDeck (deckId) {
     }
 }
 
-export function addQuestion (params) {
+export function addQuestion (deckId, question, answer) {
     return {
         type: ADD_QUESTION,
-        params,
+        deckId,
+        question,
+        answer
     }
 }

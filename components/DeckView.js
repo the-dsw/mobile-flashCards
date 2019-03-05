@@ -24,6 +24,7 @@ class DeckView extends Component {
         }
     }
 
+
     handleAddCardClick = () => {
         const { deckId, questions } = this.props
         this.props.navigation.navigate(
@@ -46,23 +47,21 @@ class DeckView extends Component {
         )
     }
 
-    handleDeleteItem = async () => {
+    handleDeleteItem = () => {
         const { remove, goBack, deckId } = this.props
 
-        await remove()
-        await goBack()
-        await removeFromDeck(deckId)
+        remove()
+        goBack()
+        removeFromDeck(deckId)
 
     }
 
     render() {
         const { deckId, decks } = this.props
-        if (!decks) {
-            return null
-        }
-        const title = "Delete Item"
-        const questions = decks[deckId].questions || []
+        // to fix undefined value after delete an item from decks Object
+        const questions = decks[deckId] ? decks[deckId].questions : ('': {})
 
+        const title = "Delete Item"
         const formattedTitle =
             Platform.OS === 'android' ? title.toUpperCase() : title;
 
@@ -70,7 +69,9 @@ class DeckView extends Component {
             <View style={styles.container}>
                 <View style={styles.center}>
                     <Text style={{fontSize: 20}}>{deckId}</Text>
-                    <Text style={{fontSize: 16, color: gray}}>{questions.length > 1 ? `${questions.length} cards` :  `${questions.length} card`}</Text>
+                    <Text style={{fontSize: 16, color: gray}}>
+                        {questions.length > 1 ? `${questions.length} cards` :  `${questions.length} card`}
+                    </Text>
                 </View>
                 <View style={styles.buttons}>
                     <Button
@@ -137,7 +138,7 @@ function mapStateToProps (state, { navigation }) {
     return {
         deckId,
         decks: state,
-        questions,
+        questions
     }
 }
 

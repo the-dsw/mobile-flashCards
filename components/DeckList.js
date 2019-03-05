@@ -29,6 +29,7 @@ class DeckList extends Component {
 
     }
 
+
     render() {
 
         const { decks } = this.props
@@ -42,7 +43,7 @@ class DeckList extends Component {
             <ScrollView style={styles.container}>
                 {Object.keys(decks).map((deck) => {
                     const title = decks[deck].title
-                    const questions = decks[deck].questions || []
+                    const questions = decks[deck].questions
                     return (
                         <TouchableOpacity
                             key={deck}
