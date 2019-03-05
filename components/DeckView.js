@@ -23,24 +23,27 @@ class DeckView extends Component {
     }
 
     handleAddCardClick = () => {
-        const { deckId, questions } = this.props;
+        const { deckId, decks } = this.props
+        const questions = decks[deckId].questions
+        console.log(questions)
         this.props.navigation.navigate(
             'NewQuestion',
             {
                 deckId,
                 questions,
             }
-        );
+        )
     }
     handleQuizClick = () => {
-        const { deckId, questions } = this.props;
+        const { deckId, decks } = this.props
+        const questions = decks[deckId].questions
         this.props.navigation.navigate(
             'Quiz',
             {
                 deckId,
                 questions
             }
-        );
+        )
     }
 
     render() {
