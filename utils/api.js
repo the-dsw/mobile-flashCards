@@ -35,7 +35,8 @@ export function addQuestionToDeck({deckId, question, answer}) {
                         }
                     ]
                 }
-            };
+            }
+
 
             return AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify(updatedDeck))
         })
