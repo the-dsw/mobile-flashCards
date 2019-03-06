@@ -41,7 +41,7 @@ class NewDeck extends Component {
                        title: '',
                        error: ''
                    })))
-                   .then(() =>  navigation.navigate('DeckList', { deckId: title }))
+                   .then(() =>  navigation.navigate('DeckView', { deckId: title }))
            }
 
 
